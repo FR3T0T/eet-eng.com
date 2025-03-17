@@ -1,213 +1,618 @@
-<!-- MathJax for rendering mathematical formulas -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complex Numbers for Electrical Engineering</title>
+    <!-- MathJax for rendering mathematical expressions -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --light-accent: #ecf0f1;
+            --box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+        
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 15px;
+        }
+        
+        h3 {
+            font-size: 1.4em;
+            color: var(--secondary-color);
+        }
+        
+        p, ul, ol {
+            margin-bottom: 1.2em;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+        
+        .full-width {
+            grid-column: span 12;
+        }
+        
+        .two-thirds {
+            grid-column: span 8;
+        }
+        
+        .one-third {
+            grid-column: span 4;
+        }
+        
+        .half {
+            grid-column: span 6;
+        }
+        
+        .math-box {
+            background-color: var(--light-accent);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .example-box {
+            background-color: var(--background-color);
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .application-box {
+            background-color: #e8f4f8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .visual-placeholder {
+            background-color: #eee;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: 5px;
+            margin: 15px 0;
+            border: 1px dashed #aaa;
+        }
+        
+        .formula {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--light-accent);
+        }
+        
+        .note {
+            background-color: #fef9e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .engineering-note {
+            background-color: #e8f8f5;
+            border-left: 4px solid #1abc9c;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .real-color {
+            color: #3498db;
+        }
+        
+        .imaginary-color {
+            color: #e74c3c;
+        }
+        
+        .tab-container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            background-color: var(--light-accent);
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-button.active {
+            border-bottom: 3px solid var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
 
-<!-- Start of Complex Numbers Content -->
-<div class="complex-numbers-container" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; width: 100%; box-sizing: border-box;">
-    <h1 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">Complex Numbers</h1>
-    
-    <p>Complex numbers are a fundamental mathematical concept essential for understanding electrical systems, signal processing, control theory, and many other engineering applications. They extend the real number system by introducing the imaginary unit \(i\), where \(i^2 = -1\).</p>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">1. Introduction to Complex Numbers</h2>
-    
-    <h3 style="color: #3498db;">1.1 Definition</h3>
-    <p>A complex number \(z\) is a number of the form:</p>
-    <p>\[ z = a + bi \]</p>
-    <p>where \(a\) and \(b\) are real numbers, and \(i\) is the imaginary unit defined by \(i^2 = -1\). In this representation:</p>
-    <ul>
-        <li>\(a\) is called the <strong>real part</strong> of \(z\), denoted by \(\text{Re}(z)\)</li>
-        <li>\(b\) is called the <strong>imaginary part</strong> of \(z\), denoted by \(\text{Im}(z)\)</li>
-    </ul>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>For the complex number \(z = 3 + 4i\):</p>
-        <p>\(\text{Re}(z) = 3\) and \(\text{Im}(z) = 4\)</p>
+<h1>Complex Numbers for Electrical Engineering</h1>
+
+<div class="container">
+    <div class="full-width">
+        <p>Complex numbers are fundamental mathematical tools in electrical engineering, providing elegant solutions for analyzing AC circuits, signal processing, and control systems. This guide will take you from basic concepts to practical engineering applications.</p>
     </div>
-    
-    <h3 style="color: #3498db;">1.2 The Complex Plane</h3>
-    <p>Complex numbers can be visualized as points in a two-dimensional plane called the complex plane or Argand diagram. The horizontal axis represents the real part, and the vertical axis represents the imaginary part.</p>
-    
-    <div style="text-align: center; margin: 20px 0;">
-        <figure>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Complex_number_illustration.svg" alt="Complex Plane Illustration" style="max-width: 100%; height: auto;">
-            <figcaption>The complex plane showing a complex number \(z = a + bi\)</figcaption>
-        </figure>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">2. Operations with Complex Numbers</h2>
-    
-    <h3 style="color: #3498db;">2.1 Addition and Subtraction</h3>
-    <p>Complex numbers are added or subtracted by combining their real and imaginary parts separately:</p>
-    <p>\[ (a + bi) + (c + di) = (a + c) + (b + d)i \]</p>
-    <p>\[ (a + bi) - (c + di) = (a - c) + (b - d)i \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>\((3 + 2i) + (1 + 5i) = (3 + 1) + (2 + 5)i = 4 + 7i\)</p>
-        <p>\((3 + 2i) - (1 + 5i) = (3 - 1) + (2 - 5)i = 2 - 3i\)</p>
-    </div>
-    
-    <h3 style="color: #3498db;">2.2 Multiplication</h3>
-    <p>Complex numbers are multiplied using algebraic distribution, remembering that \(i^2 = -1\):</p>
-    <p>\[ (a + bi)(c + di) = ac + adi + bci + bdi^2 \]</p>
-    <p>\[ = (ac - bd) + (ad + bc)i \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>\((3 + 2i)(1 + 5i) = 3 \cdot 1 + 3 \cdot 5i + 2i \cdot 1 + 2i \cdot 5i\)</p>
-        <p>\(= 3 + 15i + 2i + 10i^2 = 3 + 17i + 10(-1) = 3 + 17i - 10 = -7 + 17i\)</p>
-    </div>
-    
-    <h3 style="color: #3498db;">2.3 Complex Conjugate</h3>
-    <p>The complex conjugate of \(z = a + bi\), denoted by \(\overline{z}\) or \(z^*\), is defined as:</p>
-    <p>\[ \overline{z} = a - bi \]</p>
-    <p>The complex conjugate is useful for division and has several important properties:</p>
-    <ul>
-        <li>\(z \cdot \overline{z} = |z|^2 = a^2 + b^2\)</li>
-        <li>\(\overline{z_1 + z_2} = \overline{z_1} + \overline{z_2}\)</li>
-        <li>\(\overline{z_1 \cdot z_2} = \overline{z_1} \cdot \overline{z_2}\)</li>
-    </ul>
-    
-    <h3 style="color: #3498db;">2.4 Division</h3>
-    <p>Division of complex numbers is performed by multiplying both numerator and denominator by the complex conjugate of the denominator:</p>
-    <p>\[ \frac{z_1}{z_2} = \frac{a + bi}{c + di} = \frac{(a + bi)(c - di)}{(c + di)(c - di)} = \frac{(ac + bd) + (bc - ad)i}{c^2 + d^2} \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>\(\frac{3 + 2i}{1 + i} = \frac{(3 + 2i)(1 - i)}{(1 + i)(1 - i)} = \frac{3 - 3i + 2i - 2i^2}{1^2 - i^2} = \frac{3 - i + 2}{1 + 1} = \frac{5 - i}{2} = \frac{5}{2} - \frac{1}{2}i\)</p>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">3. Modulus and Argument</h2>
-    
-    <h3 style="color: #3498db;">3.1 Modulus</h3>
-    <p>The modulus (or absolute value) of a complex number \(z = a + bi\) is the distance from the origin to the point \(z\) in the complex plane:</p>
-    <p>\[ |z| = \sqrt{a^2 + b^2} \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>The modulus of \(z = 3 + 4i\) is \(|z| = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5\)</p>
-    </div>
-    
-    <h3 style="color: #3498db;">3.2 Argument</h3>
-    <p>The argument of a complex number \(z = a + bi\) is the angle in radians between the positive real axis and the line joining the origin to the point \(z\) in the complex plane.</p>
-    <p>For \(z \neq 0\), the argument is defined as:</p>
-    <p>\[ \arg(z) = \begin{cases} 
-      \arctan(b/a) & \text{if } a > 0 \\
-      \arctan(b/a) + \pi & \text{if } a < 0, b \geq 0 \\
-      \arctan(b/a) - \pi & \text{if } a < 0, b < 0 \\
-      \pi/2 & \text{if } a = 0, b > 0 \\
-      -\pi/2 & \text{if } a = 0, b < 0
-   \end{cases} \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>The argument of \(z = -3 + 3i\) is \(\arg(z) = \arctan(3/(-3)) + \pi = \arctan(-1) + \pi = -\pi/4 + \pi = 3\pi/4\)</p>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">4. Polar Form and Euler's Formula</h2>
-    
-    <h3 style="color: #3498db;">4.1 Polar Form</h3>
-    <p>Using the modulus and argument, a complex number can be written in polar form:</p>
-    <p>\[ z = |z|(\cos(\arg(z)) + i\sin(\arg(z))) \]</p>
-    <p>We often denote the modulus as \(r = |z|\) and the argument as \(\theta = \arg(z)\), giving:</p>
-    <p>\[ z = r(\cos\theta + i\sin\theta) \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>The complex number \(z = 3 + 3i\) has modulus \(|z| = \sqrt{3^2 + 3^2} = 3\sqrt{2}\) and argument \(\arg(z) = \arctan(3/3) = \arctan(1) = \pi/4\).</p>
-        <p>In polar form: \(z = 3\sqrt{2}(\cos(\pi/4) + i\sin(\pi/4))\)</p>
-    </div>
-    
-    <h3 style="color: #3498db;">4.2 Euler's Formula</h3>
-    <p>Euler's formula establishes a profound connection between trigonometric functions and the complex exponential:</p>
-    <p>\[ e^{i\theta} = \cos\theta + i\sin\theta \]</p>
-    <p>Using Euler's formula, the polar form can be written more compactly as:</p>
-    <p>\[ z = re^{i\theta} \]</p>
-    <p>This exponential form is particularly useful for multiplication, division, and powers of complex numbers.</p>
-    
-    <div style="background-color: #f5eef8; padding: 15px; margin: 20px 0; border-left: 4px solid #9b59b6;">
-        <h4 style="margin-top: 0;">De Moivre's Formula:</h4>
-        <p>For any complex number in polar form \(z = re^{i\theta}\) and any integer \(n\):</p>
-        <p>\[ z^n = r^ne^{in\theta} = r^n(\cos(n\theta) + i\sin(n\theta)) \]</p>
-    </div>
-    
-    <h3 style="color: #3498db;">4.3 Multiplication and Division in Polar Form</h3>
-    <p>In polar form, multiplication and division become simpler:</p>
-    <p>For \(z_1 = r_1e^{i\theta_1}\) and \(z_2 = r_2e^{i\theta_2}\):</p>
-    <p>\[ z_1 \cdot z_2 = r_1r_2e^{i(\theta_1 + \theta_2)} \]</p>
-    <p>\[ \frac{z_1}{z_2} = \frac{r_1}{r_2}e^{i(\theta_1 - \theta_2)} \]</p>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">5. Applications in Electrical Engineering</h2>
-    
-    <div style="background-color: #e8f4f8; padding: 15px; margin: 20px 0; border-radius: 5px;">
-        <h3 style="color: #3498db; margin-top: 0;">5.1 AC Circuit Analysis</h3>
-        <p>Complex numbers are essential for analyzing alternating current (AC) circuits. The impedance \(Z\) of a circuit can be expressed as a complex number:</p>
-        <p>\[ Z = R + jX \]</p>
-        <p>where \(R\) is the resistance and \(X\) is the reactance. Note that in electrical engineering, \(j\) is commonly used instead of \(i\) to avoid confusion with current.</p>
-        <p>Ohm's law for AC circuits is expressed as:</p>
-        <p>\[ V = ZI \]</p>
-        <p>where \(V\) and \(I\) are phasors representing voltage and current.</p>
-    </div>
-    
-    <div style="background-color: #e8f4f8; padding: 15px; margin: 20px 0; border-radius: 5px;">
-        <h3 style="color: #3498db; margin-top: 0;">5.2 Phasors and Sinusoidal Signals</h3>
-        <p>A sinusoidal signal \(v(t) = V_m\cos(\omega t + \phi)\) can be represented by the complex number (phasor):</p>
-        <p>\[ V = V_m e^{j\phi} \]</p>
-        <p>This simplifies calculations involving multiple sinusoidal signals of the same frequency.</p>
-    </div>
-    
-    <div style="background-color: #e8f4f8; padding: 15px; margin: 20px 0; border-radius: 5px;">
-        <h3 style="color: #3498db; margin-top: 0;">5.3 Frequency Response</h3>
-        <p>Transfer functions in control systems and signal processing are often expressed as functions of the complex variable \(s = \sigma + j\omega\) (in the Laplace domain) or \(z = re^{j\theta}\) (in the Z-domain for discrete systems).</p>
-    </div>
-    
-    <div style="background-color: #e8f4f8; padding: 15px; margin: 20px 0; border-radius: 5px;">
-        <h3 style="color: #3498db; margin-top: 0;">5.4 Power Calculations</h3>
-        <p>The apparent power \(S\) in an AC circuit is a complex number:</p>
-        <p>\[ S = P + jQ \]</p>
-        <p>where \(P\) is the real power (measured in watts) and \(Q\) is the reactive power (measured in volt-amperes reactive).</p>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">6. Properties and Identities</h2>
-    
-    <p>Some important properties and identities of complex numbers:</p>
-    
-    <h3 style="color: #3498db;">6.1 Basic Properties</h3>
-    <ul>
-        <li>\(i^2 = -1\)</li>
-        <li>\(i^3 = -i\)</li>
-        <li>\(i^4 = 1\)</li>
-        <li>\(|z_1 \cdot z_2| = |z_1| \cdot |z_2|\)</li>
-        <li>\(|z_1 / z_2| = |z_1| / |z_2|\)</li>
-        <li>\(\arg(z_1 \cdot z_2) = \arg(z_1) + \arg(z_2)\)</li>
-        <li>\(\arg(z_1 / z_2) = \arg(z_1) - \arg(z_2)\)</li>
-    </ul>
-    
-    <h3 style="color: #3498db;">6.2 Useful Identities</h3>
-    <ul>
-        <li>\(e^{i\pi} + 1 = 0\) (Euler's identity)</li>
-        <li>\(\cos\theta = \frac{e^{i\theta} + e^{-i\theta}}{2}\)</li>
-        <li>\(\sin\theta = \frac{e^{i\theta} - e^{-i\theta}}{2i}\)</li>
-    </ul>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">7. Root Finding and Factorization</h2>
-    
-    <p>Complex numbers are essential for finding all roots of polynomials. The Fundamental Theorem of Algebra states that every non-constant polynomial with complex coefficients has at least one complex root.</p>
-    
-    <h3 style="color: #3498db;">7.1 Example: Quadratic Equations</h3>
-    <p>For a quadratic equation \(ax^2 + bx + c = 0\), the roots are given by:</p>
-    <p>\[ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]</p>
-    <p>When the discriminant \(b^2 - 4ac < 0\), the roots are complex conjugates.</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>For the equation \(x^2 + 2x + 5 = 0\), the discriminant is \(b^2 - 4ac = 2^2 - 4 \cdot 1 \cdot 5 = 4 - 20 = -16 < 0\)</p>
-        <p>The roots are \(x = \frac{-2 \pm \sqrt{-16}}{2} = -1 \pm 2i\)</p>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">Conclusion</h2>
-    
-    <p>Complex numbers are an essential mathematical tool in engineering, particularly in electrical fields. They provide elegant solutions to problems involving oscillations, waves, and AC circuits. Understanding complex numbers and their operations is fundamental for advanced concepts in signal processing, control systems, and electromagnetic theory.</p>
 </div>
-<!-- End of Complex Numbers Content -->
+
+<section id="fundamentals">
+    <h2>1. Fundamentals of Complex Numbers</h2>
+    
+    <div class="container">
+        <div class="two-thirds">
+            <h3>1.1 Definition and Basic Representation</h3>
+            <p>A complex number \(z\) combines two components:</p>
+            <ul>
+                <li>A <span class="real-color">real part</span> (\(a\))</li>
+                <li>An <span class="imaginary-color">imaginary part</span> (\(b\))</li>
+            </ul>
+            
+            <p>Written in standard form as:</p>
+            <div class="formula">
+                \[ z = a + bi \]
+            </div>
+            
+            <p>In electrical engineering, we use \(j\) instead of \(i\) to avoid confusion with current notation:</p>
+            <div class="formula">
+                \[ z = a + jb \]
+            </div>
+            
+            <p>Where \(j\) is the imaginary unit defined by \(j^2 = -1\)</p>
+            
+            <div class="example-box">
+                <h4>Example:</h4>
+                <p>\(z = 3 + j4\) has real part \(3\) and imaginary part \(4\).</p>
+            </div>
+        </div>
+        
+        <div class="one-third">
+            <div class="visual-placeholder">
+                [Visualization: A simple diagram showing a complex number as a point in the complex plane with labeled real and imaginary components]
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="half">
+            <h3>1.2 The Complex Plane</h3>
+            <p>Every complex number corresponds to a unique point in the complex plane:</p>
+            <ul>
+                <li>The horizontal axis represents the <span class="real-color">real component</span></li>
+                <li>The vertical axis represents the <span class="imaginary-color">imaginary component</span></li>
+            </ul>
+            <p>This geometric interpretation lets us visualize complex numbers as vectors from the origin.</p>
+        </div>
+        
+        <div class="half">
+            <div class="visual-placeholder">
+                [Visualization: The complex plane with labeled axes and several example points]
+            </div>
+        </div>
+    </div>
+    
+    <h3>1.3 Key Forms of Complex Numbers</h3>
+    
+    <div class="container">
+        <div class="full-width">
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active">Rectangular Form</button>
+                    <button class="tab-button">Polar Form</button>
+                    <button class="tab-button">Exponential Form</button>
+                </div>
+                
+                <div class="tab-content">
+                    <h4>Rectangular form: \(z = a + jb\)</h4>
+                    <ul>
+                        <li>Most familiar representation</li>
+                        <li>Directly shows real and imaginary components</li>
+                        <li>Best for addition and subtraction</li>
+                    </ul>
+                    <div class="visual-placeholder">
+                        [Visualization: Rectangular form representation showing real and imaginary axes]
+                    </div>
+                </div>
+            </div>
+            
+            <div class="math-box">
+                <h4>Converting between forms:</h4>
+                <ul>
+                    <li>Rectangular to polar: \(r = \sqrt{a^2 + b^2}\), \(\theta = \tan^{-1}(b/a)\)</li>
+                    <li>Polar to rectangular: \(a = r\cos \theta\), \(b = r\sin \theta\)</li>
+                    <li>Rectangular to exponential: \(z = a + jb = re^{j\theta}\) where \(r = \sqrt{a^2 + b^2}\) and \(\theta = \tan^{-1}(b/a)\)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="operations">
+    <h2>2. Operations with Complex Numbers</h2>
+    
+    <div class="container">
+        <div class="two-thirds">
+            <h3>2.1 Addition and Subtraction</h3>
+            <p>Add or subtract the real and imaginary parts separately:</p>
+            
+            <div class="formula">
+                \[ z_1 + z_2 = (a_1 + jb_1) + (a_2 + jb_2) = (a_1 + a_2) + j(b_1 + b_2) \]
+            </div>
+            <div class="formula">
+                \[ z_1 - z_2 = (a_1 + jb_1) - (a_2 + jb_2) = (a_1 - a_2) + j(b_1 - b_2) \]
+            </div>
+            
+            <div class="example-box">
+                <h4>Example:</h4>
+                <p>\((3 + j4) + (2 - j5) = (3 + 2) + j(4 - 5) = 5 - j1\)</p>
+            </div>
+            
+            <p>Geometrically, addition is similar to vector addition in the complex plane.</p>
+        </div>
+        
+        <div class="one-third">
+            <div class="visual-placeholder">
+                [Visualization: Vector addition of complex numbers in the complex plane]
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="full-width">
+            <h3>2.2 Multiplication</h3>
+            <p>Multiply using algebraic distribution and remember that \(j^2 = -1\):</p>
+            
+            <div class="formula">
+                \[ (a_1 + jb_1)(a_2 + jb_2) = a_1a_2 + ja_1b_2 + jb_1a_2 + j^2b_1b_2 \]
+                \[ = (a_1a_2 - b_1b_2) + j(a_1b_2 + b_1a_2) \]
+            </div>
+            
+            <div class="example-box">
+                <h4>Example:</h4>
+                <p>\((3 + j4)(2 - j5) = 3 \cdot 2 - 3 \cdot j5 + j4 \cdot 2 + j4 \cdot (-j5)\)</p>
+                <p>\(= 6 - j15 + j8 - j^2 \cdot 20 = 6 - j15 + j8 + 20 = 26 - j7\)</p>
+            </div>
+            
+            <div class="math-box">
+                <h4>Multiplication in polar form:</h4>
+                <p>In polar form, multiplication becomes much simpler:</p>
+                <div class="formula">
+                    \[ z_1 \cdot z_2 = r_1e^{j\theta_1} \cdot r_2e^{j\theta_2} = r_1r_2e^{j(\theta_1+\theta_2)} \]
+                </div>
+                <p>This means:</p>
+                <ul>
+                    <li>Multiply the magnitudes</li>
+                    <li>Add the angles</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="half">
+            <h3>2.3 Complex Conjugate</h3>
+            <p>The complex conjugate of \(z = a + jb\) is defined as:</p>
+            <div class="formula">
+                \[ z^* = a - jb \]
+            </div>
+            
+            <p>Properties of the complex conjugate:</p>
+            <ul>
+                <li>\(z \cdot z^* = |z|^2 = a^2 + b^2\)</li>
+                <li>\((z_1 + z_2)^* = z_1^* + z_2^*\)</li>
+                <li>\((z_1 \cdot z_2)^* = z_1^* \cdot z_2^*\)</li>
+            </ul>
+        </div>
+        
+        <div class="half">
+            <div class="visual-placeholder">
+                [Visualization: Complex conjugate as reflection across the real axis]
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="full-width">
+            <h3>2.4 Division</h3>
+            <p>Division uses the complex conjugate technique:</p>
+            
+            <div class="formula">
+                \[ \frac{z_1}{z_2} = \frac{a_1 + jb_1}{a_2 + jb_2} = \frac{(a_1 + jb_1)(a_2 - jb_2)}{(a_2 + jb_2)(a_2 - jb_2)} = \frac{(a_1a_2 + b_1b_2) + j(b_1a_2 - a_1b_2)}{a_2^2 + b_2^2} \]
+            </div>
+            
+            <div class="example-box">
+                <h4>Example:</h4>
+                <p>\[\frac{3 + j4}{2 + j5} = \frac{(3 + j4)(2 - j5)}{(2 + j5)(2 - j5)} = \frac{26 - j7}{4 + 25} = \frac{26 - j7}{29} = \frac{26}{29} - j\frac{7}{29}\]</p>
+            </div>
+            
+            <div class="math-box">
+                <h4>Division in polar form:</h4>
+                <p>In polar form, division is:</p>
+                <div class="formula">
+                    \[ \frac{z_1}{z_2} = \frac{r_1e^{j\theta_1}}{r_2e^{j\theta_2}} = \frac{r_1}{r_2}e^{j(\theta_1-\theta_2)} \]
+                </div>
+                <p>This means:</p>
+                <ul>
+                    <li>Divide the magnitudes</li>
+                    <li>Subtract the angles</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="full-width">
+            <h3>2.5 Powers and Roots</h3>
+            <p>De Moivre's formula allows us to compute powers of complex numbers:</p>
+            
+            <div class="formula">
+                \[ (re^{j\theta})^n = r^ne^{jn\theta} = r^n(\cos(n\theta) + j\sin(n\theta)) \]
+            </div>
+            
+            <p>For roots:</p>
+            <div class="formula">
+                \[ z^{1/n} = r^{1/n}e^{j(\theta+2\pi k)/n} \]
+            </div>
+            
+            <p>where \(k = 0, 1, 2, ..., n-1\), giving \(n\) distinct roots.</p>
+            
+            <div class="visual-placeholder">
+                [Visualization: Complex roots distributed around a circle]
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="applications">
+    <h2>3. Applications in Electrical Engineering</h2>
+    
+    <div class="container">
+        <div class="two-thirds">
+            <h3>3.1 Impedance and Admittance</h3>
+            <p>Complex impedance combines resistance and reactance:</p>
+            <div class="formula">
+                \[ Z = R + jX \]
+            </div>
+            
+            <p>Where:</p>
+            <ul>
+                <li>\(R\) is resistance (real part, measured in ohms)</li>
+                <li>\(X\) is reactance (imaginary part, measured in ohms)
+                    <ul>
+                        <li>For inductors: \(X_L = \omega L\) (positive)</li>
+                        <li>For capacitors: \(X_C = -\frac{1}{\omega C}\) (negative)</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <p>The complex admittance is the reciprocal of impedance:</p>
+            <div class="formula">
+                \[ Y = \frac{1}{Z} = G + jB \]
+            </div>
+            
+            <p>Where:</p>
+            <ul>
+                <li>\(G\) is conductance (real part, measured in siemens)</li>
+                <li>\(B\) is susceptance (imaginary part, measured in siemens)</li>
+            </ul>
+        </div>
+        
+        <div class="one-third">
+            <div class="application-box">
+                <h4>Example:</h4>
+                <p>A circuit with a resistor (\(R = 100\Omega\)) in series with an inductor (\(L = 50mH\)) at a frequency of \(\omega = 1000\) rad/s has an impedance of:</p>
+                <p>\(Z = 100 + j(1000 \times 0.05) = 100 + j50\Omega\)</p>
+                <p>The magnitude of this impedance is:</p>
+                <p>\(|Z| = \sqrt{100^2 + 50^2} = \sqrt{12500} = 111.8\Omega\)</p>
+                <p>The phase angle is:</p>
+                <p>\(\theta = \tan^{-1}(50/100) = 26.6°\)</p>
+            </div>
+            
+            <div class="visual-placeholder">
+                [Visualization: Impedance triangle showing relationship between R, X, and |Z|]
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="half">
+            <h3>3.2 Phasors and AC Analysis</h3>
+            <p>A sinusoidal signal \(v(t) = V_m\cos(\omega t + \phi)\) can be represented by the complex phasor:</p>
+            <div class="formula">
+                \[ V = V_m e^{j\phi} \]
+            </div>
+            
+            <p>This transforms time-domain differential equations into algebraic equations in the frequency domain:</p>
+            <div class="formula">
+                \[ v(t) = V_m\cos(\omega t + \phi) \Rightarrow V = V_m\angle\phi \]
+            </div>
+            
+            <div class="engineering-note">
+                <h4>Engineering Insight:</h4>
+                <p>Phasors only work for sinusoidal signals of the same frequency. The real, time-domain signal is understood to be the real part of the complex expression \(Ve^{j\omega t}\).</p>
+            </div>
+        </div>
+        
+        <div class="half">
+            <div class="application-box">
+                <h4>Ohm's Law in AC Circuits:</h4>
+                <p>For AC circuit analysis:</p>
+                <div class="formula">
+                    \[ V = ZI \]
+                </div>
+                <p>Where \(V\) and \(I\) are phasors representing voltage and current, and \(Z\) is the complex impedance.</p>
+                <p>This means:</p>
+                <ul>
+                    <li>Magnitudes are related by \(|V| = |Z| \cdot |I|\)</li>
+                    <li>Phase angles are related by \(\phi_V = \phi_Z + \phi_I\)</li>
+                </ul>
+            </div>
+            
+            <div class="visual-placeholder">
+                [Visualization: Phasor diagram showing relationship between current and voltage phasors]
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="full-width">
+            <h3>3.3 Frequency Response and Transfer Functions</h3>
+            <p>Transfer functions in control systems and signal processing are often expressed as functions of the complex variable \(s = \sigma + j\omega\) (in the Laplace domain) or \(z = re^{j\theta}\) (in the Z-domain for discrete systems).</p>
+            
+            <div class="application-box">
+                <h4>Example: RC Low-Pass Filter</h4>
+                <p>A simple RC low-pass filter has the transfer function:</p>
+                <div class="formula">
+                    \[ H(j\omega) = \frac{1}{1 + j\omega RC} \]
+                </div>
+                <p>The magnitude response is:</p>
+                <div class="formula">
+                    \[ |H(j\omega)| = \frac{1}{\sqrt{1 + (\omega RC)^2}} \]
+                </div>
+                <p>And the phase response is:</p>
+                <div class="formula">
+                    \[ \angle H(j\omega) = -\tan^{-1}(\omega RC) \]
+                </div>
+            </div>
+            
+            <div class="visual-placeholder">
+                [Visualization: Bode plot showing magnitude and phase response of an RC filter]
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="two-thirds">
+            <h3>3.4 Power Calculations</h3>
+            <p>The apparent power \(S\) in an AC circuit is a complex number:</p>
+            <div class="formula">
+                \[ S = P + jQ \]
+            </div>
+            
+            <p>Where:</p>
+            <ul>
+                <li>\(P\) is the real power (measured in watts) - power that performs work</li>
+                <li>\(Q\) is the reactive power (measured in volt-amperes reactive) - power that is stored and released in reactive components</li>
+            </ul>
+            
+            <p>For a load with voltage \(V\) and current \(I\):</p>
+            <div class="formula">
+                \[ S = VI^* \]
+            </div>
+            
+            <div class="engineering-note">
+                <h4>Power Factor:</h4>
+                <p>The power factor is given by:</p>
+                <div class="formula">
+                    \[ PF = \cos\theta = \frac{P}{|S|} \]
+                </div>
+                <p>Where \(\theta\) is the phase angle between voltage and current.</p>
+                <ul>
+                    <li>PF = 1: Purely resistive load (ideal)</li>
+                    <li>PF = 0: Purely reactive load (no real power consumed)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="one-third">
+            <div class="visual-placeholder">
+                [Visualization: Power triangle showing relationship between P, Q, and |S|]
+            </div>
+            
+            <div class="application-box">
+                <h4>Example:</h4>
+                <p>If a load draws a current of \(5\angle{-30°}\) A with an applied voltage of \(120\angle{0°}\) V, the complex power is:</p>
+                <p>\(S = VI^* = 120\angle{0°} \times 5\angle{30°} = 600\angle{30°} = 519.6 + j300\) VA</p>
+                <p>The power factor is:</p>
+                <p>\(PF = \cos(30°) = 0.866\)</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="conclusion">
+    <h2>Conclusion</h2>
+    
+    <div class="container">
+        <div class="full-width">
+            <p>Complex numbers are an essential mathematical tool in electrical engineering, providing elegant solutions to problems involving oscillations, waves, and AC circuits. Understanding complex numbers and their operations is fundamental for advanced concepts in signal processing, control systems, and electromagnetic theory.</p>
+            
+            <div class="note">
+                <h4>Key Takeaways:</h4>
+                <ul>
+                    <li>Complex numbers allow us to represent magnitude and phase information simultaneously</li>
+                    <li>The exponential form \(re^{j\theta}\) greatly simplifies AC circuit analysis</li>
+                    <li>Impedance \(Z = R + jX\) combines resistance and reactance into a single quantity</li>
+                    <li>Phasors transform differential equations into algebraic equations for sinusoidal steady state</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
