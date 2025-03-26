@@ -1,213 +1,804 @@
-<!-- MathJax for rendering mathematical formulas -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complex Numbers | Engineering Mathematics</title>
+    
+    <!-- Modern CSS Framework -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Custom Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- MathJax for rendering mathematical formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --accent-color: #ff006e;
+            --light-bg: #f7f9fc;
+            --dark-text: #1e293b;
+            --light-text: #64748b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+            line-height: 1.7;
+        }
+        
+        .math-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        code, pre {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Styling for interactive components */
+        .interactive-demo {
+            border-radius: 8px;
+            background: var(--light-bg);
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        /* Print styles */
+        @media print {
+            .no-print {
+                display: none;
+            }
+            
+            body {
+                font-size: 12pt;
+                line-height: 1.5;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main content with sidebar -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row">
+            <!-- Sidebar -->
+            <div class="lg:w-64 lg:flex-shrink-0 lg:pr-8 mb-8 lg:mb-0 no-print">
+                <nav class="sticky top-24 space-y-1">
+                    <h3 class="font-semibold text-gray-900 mb-3">Table of Contents</h3>
+                    <!-- TOC links -->
+                    <a href="#intro" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">1. Introduction</a>
+                    <a href="#operations" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">2. Operations</a>
+                    <a href="#modulus-argument" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">3. Modulus and Argument</a>
+                    <a href="#polar-form" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">4. Polar Form</a>
+                    <a href="#polynomials" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">5. Complex Numbers in Polynomials</a>
+                    <a href="#taylor" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">6. Taylor Polynomials</a>
+                    <a href="#diff-equations" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">7. Differential Equations</a>
+                    <a href="#electrical" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">8. Electrical Engineering Applications</a>
+                    <a href="#problem-solving" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">9. Problem-Solving</a>
+                    <a href="#properties" class="block text-gray-500 hover:text-gray-900 py-2 text-sm">10. Properties</a>
+                </nav>
+            </div>
 
-<!-- Start of Complex Numbers Content -->
-<div class="complex-numbers-container" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; width: 100%; box-sizing: border-box;">
-    <h1 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">Complex Numbers</h1>
-    
-    <p>Complex numbers are a fundamental mathematical concept essential for understanding electrical systems, signal processing, control theory, and many other engineering applications. They extend the real number system by introducing the imaginary unit \(i\), where \(i^2 = -1\).</p>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">1. Introduction to Complex Numbers</h2>
-    
-    <h3 style="color: #3498db;">1.1 Definition</h3>
-    <p>A complex number \(z\) is a number of the form:</p>
-    <p>\[ z = a + bi \]</p>
-    <p>where \(a\) and \(b\) are real numbers, and \(i\) is the imaginary unit defined by \(i^2 = -1\). In this representation:</p>
-    <ul>
-        <li>\(a\) is called the <strong>real part</strong> of \(z\), denoted by \(\text{Re}(z)\)</li>
-        <li>\(b\) is called the <strong>imaginary part</strong> of \(z\), denoted by \(\text{Im}(z)\)</li>
-    </ul>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>For the complex number \(z = 3 + 4i\):</p>
-        <p>\(\text{Re}(z) = 3\) and \(\text{Im}(z) = 4\)</p>
+            <!-- Main Content -->
+            <div class="lg:flex-grow">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6" id="intro">Complex Numbers</h1>
+                
+                <p class="text-gray-700 mb-6">
+                    Complex numbers are a fundamental mathematical concept essential for understanding electrical systems, signal processing, control theory, and many other engineering applications. They extend the real number system by introducing the imaginary unit \(i\), where \(i^2 = -1\).
+                </p>
+                
+                <!-- Introduction Section -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">1. Introduction to Complex Numbers</h2>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">1.1 Definition</h3>
+                    <p class="text-gray-700 mb-4">A complex number \(z\) is a number of the form:</p>
+                    <div class="math-container">
+                        \[ z = a + bi \]
+                    </div>
+                    <p class="text-gray-700 mb-4">where \(a\) and \(b\) are real numbers, and \(i\) is the imaginary unit defined by \(i^2 = -1\). In this representation:</p>
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li>\(a\) is called the <strong>real part</strong> of \(z\), denoted by \(\text{Re}(z)\)</li>
+                        <li>\(b\) is called the <strong>imaginary part</strong> of \(z\), denoted by \(\text{Im}(z)\)</li>
+                    </ul>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mb-6">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">For the complex number \(z = 3 + 4i\):</p>
+                            <p class="text-gray-600">\(\text{Re}(z) = 3\) and \(\text{Im}(z) = 4\)</p>
+                            <p class="text-gray-600 mt-2">For the complex number \(z = -2i\):</p>
+                            <p class="text-gray-600">\(\text{Re}(z) = 0\) and \(\text{Im}(z) = -2\)</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">1.2 The Complex Plane</h3>
+                    <p class="text-gray-700 mb-4">Complex numbers can be visualized as points in a two-dimensional plane called the complex plane or Argand diagram. The horizontal axis represents the real part, and the vertical axis represents the imaginary part.</p>
+                    
+                    <div class="text-center mb-6">
+                        <figure>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Complex_number_illustration.svg" alt="Complex Plane Illustration" class="mx-auto max-w-full h-auto rounded-lg">
+                            <figcaption class="text-sm text-gray-500 mt-2">The complex plane showing a complex number \(z = a + bi\)</figcaption>
+                        </figure>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">1.3 Visualization Techniques</h3>
+                    <p class="text-gray-700 mb-4">Beyond simple plotting, there are several visualization techniques that help understand complex number operations:</p>
+                    
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li><strong>Vector representation</strong>: Complex numbers can be viewed as 2D vectors, with operations like addition corresponding to vector addition</li>
+                        <li><strong>Color mapping</strong>: Using color to represent magnitude and hue to represent phase</li>
+                        <li><strong>Dynamic plotting</strong>: Showing how complex numbers transform under various operations</li>
+                    </ul>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example: Visualizing Complex Addition</h4>
+                            <p class="text-gray-600">To add two complex numbers \(z_1 = 3 + 2i\) and \(z_2 = 1 + 4i\):</p>
+                            <p class="text-gray-600">1. Plot both numbers as points in the complex plane</p>
+                            <p class="text-gray-600">2. Construct vectors from the origin to each point</p>
+                            <p class="text-gray-600">3. Apply the parallelogram rule from vector addition</p>
+                            <p class="text-gray-600">4. The result \(z_1 + z_2 = 4 + 6i\) can be verified geometrically</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Operations Section -->
+                <section class="mb-12" id="operations">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">2. Operations with Complex Numbers</h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mt-6">
+                        <!-- Addition and Subtraction -->
+                        <div class="card bg-white rounded-lg overflow-hidden border border-gray-200">
+                            <div class="p-6">
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">2.1 Addition & Subtraction</h3>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    Complex numbers are added or subtracted by combining their real and imaginary parts separately.
+                                </p>
+                                <div class="math-container">
+                                    \[ (a + bi) + (c + di) = (a + c) + (b + d)i \]
+                                    \[ (a + bi) - (c + di) = (a - c) + (b - d)i \]
+                                </div>
+                                
+                                <div class="mt-4 pt-4 border-t border-gray-200">
+                                    <h4 class="text-sm font-semibold text-gray-700 mb-2">Example:</h4>
+                                    <p class="text-sm text-gray-600">
+                                        \((3 + 2i) + (1 + 5i) = (3 + 1) + (2 + 5)i = 4 + 7i\)
+                                    </p>
+                                    <p class="text-sm text-gray-600 mt-2">
+                                        \((3 + 2i) - (1 + 5i) = (3 - 1) + (2 - 5)i = 2 - 3i\)
+                                    </p>
+                                    <p class="text-sm text-gray-600 mt-2">
+                                        \((5 - 7i) - i = 5 + (-7 - 1)i = 5 - 8i\)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Multiplication -->
+                        <div class="card bg-white rounded-lg overflow-hidden border border-gray-200">
+                            <div class="p-6">
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">2.2 Multiplication</h3>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    Complex numbers are multiplied using algebraic distribution, remembering that \(i^2 = -1\).
+                                </p>
+                                <div class="math-container">
+                                    \[ (a + bi)(c + di) = ac + adi + bci + bdi^2 \]
+                                    \[ = (ac - bd) + (ad + bc)i \]
+                                </div>
+                                
+                                <div class="mt-4 pt-4 border-t border-gray-200">
+                                    <h4 class="text-sm font-semibold text-gray-700 mb-2">Example:</h4>
+                                    <p class="text-sm text-gray-600">
+                                        \((3 + 2i)(1 + 5i) = 3 \cdot 1 + 3 \cdot 5i + 2i \cdot 1 + 2i \cdot 5i\)
+                                    </p>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        \(= 3 + 15i + 2i + 10i^2 = 3 + 17i + 10(-1) = 3 + 17i - 10 = -7 + 17i\)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Complex Conjugate -->
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mt-6">
+                        <div class="p-6">
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">2.3 Complex Conjugate</h3>
+                            <p class="text-gray-600 mb-4">
+                                The complex conjugate of \(z = a + bi\), denoted by \(\overline{z}\) or \(z^*\), is defined as:
+                            </p>
+                            <div class="math-container">
+                                \[ \overline{z} = a - bi \]
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                The complex conjugate is useful for division and has several important properties:
+                            </p>
+                            <ul class="list-disc ml-6 mb-4 text-gray-600">
+                                <li>\(z \cdot \overline{z} = |z|^2 = a^2 + b^2\)</li>
+                                <li>\(\overline{z_1 + z_2} = \overline{z_1} + \overline{z_2}\)</li>
+                                <li>\(\overline{z_1 \cdot z_2} = \overline{z_1} \cdot \overline{z_2}\)</li>
+                                <li>\(\overline{\overline{z}} = z\)</li>
+                            </ul>
+                            
+                            <div class="mt-4 pt-4 border-t border-gray-200">
+                                <h4 class="text-sm font-semibold text-gray-700 mb-2">Example:</h4>
+                                <p class="text-sm text-gray-600">
+                                    For \(z = 5 - 7i\), the complex conjugate is \(\overline{z} = 5 + 7i\)
+                                </p>
+                                <p class="text-sm text-gray-600 mt-2">
+                                    Verifying that \(z \cdot \overline{z} = |z|^2\):
+                                </p>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    \((5 - 7i)(5 + 7i) = 25 + 35i - 35i - 49i^2 = 25 + 49 = 74 = 5^2 + 7^2 = |z|^2\)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Division -->
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mt-6">
+                        <div class="p-6">
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">2.4 Division</h3>
+                            <p class="text-gray-600 mb-4">
+                                Division of complex numbers is performed by multiplying both numerator and denominator by the complex conjugate of the denominator:
+                            </p>
+                            <div class="math-container">
+                                \[ \frac{z_1}{z_2} = \frac{a + bi}{c + di} = \frac{(a + bi)(c - di)}{(c + di)(c - di)} = \frac{(ac + bd) + (bc - ad)i}{c^2 + d^2} \]
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-gray-200">
+                                <h4 class="text-sm font-semibold text-gray-700 mb-2">Example:</h4>
+                                <p class="text-sm text-gray-600">
+                                    \(\frac{3 + 2i}{1 + i} = \frac{(3 + 2i)(1 - i)}{(1 + i)(1 - i)} = \frac{3 - 3i + 2i - 2i^2}{1^2 - i^2} = \frac{3 - i + 2}{1 + 1} = \frac{5 - i}{2} = \frac{5}{2} - \frac{1}{2}i\)
+                                </p>
+                                <p class="text-sm text-gray-600 mt-2">
+                                    For a more complex example:
+                                </p>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    \(\frac{1 + 2i}{3 + 4i} = \frac{(1 + 2i)(3 - 4i)}{(3 + 4i)(3 - 4i)} = \frac{3 - 4i + 6i - 8i^2}{9 + 16} = \frac{3 + 2i + 8}{25} = \frac{11 + 2i}{25} = \frac{11}{25} + \frac{2}{25}i\)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Modulus and Argument Section -->
+                <section class="mb-12" id="modulus-argument">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">3. Modulus and Argument</h2>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">3.1 Modulus</h3>
+                    <p class="text-gray-700 mb-4">The modulus (or absolute value) of a complex number \(z = a + bi\) is the distance from the origin to the point \(z\) in the complex plane:</p>
+                    <div class="math-container">
+                        \[ |z| = \sqrt{a^2 + b^2} \]
+                    </div>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mb-6">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">The modulus of \(z = 3 + 4i\) is \(|z| = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5\)</p>
+                            <p class="text-gray-600 mt-2">The modulus of \(z = -1 - 2i\) is \(|z| = \sqrt{(-1)^2 + (-2)^2} = \sqrt{1 + 4} = \sqrt{5}\)</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">3.2 Argument</h3>
+                    <p class="text-gray-700 mb-4">The argument of a complex number \(z = a + bi\) is the angle in radians between the positive real axis and the line joining the origin to the point \(z\) in the complex plane.</p>
+                    <p class="text-gray-700 mb-4">For \(z \neq 0\), the argument is defined as:</p>
+                    <div class="math-container">
+                        \[ \arg(z) = \begin{cases} 
+                          \arctan(b/a) & \text{if } a > 0 \\
+                          \arctan(b/a) + \pi & \text{if } a < 0, b \geq 0 \\
+                          \arctan(b/a) - \pi & \text{if } a < 0, b < 0 \\
+                          \pi/2 & \text{if } a = 0, b > 0 \\
+                          -\pi/2 & \text{if } a = 0, b < 0
+                       \end{cases} \]
+                    </div>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mb-6">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">The argument of \(z = -3 + 3i\) is \(\arg(z) = \arctan(3/(-3)) + \pi = \arctan(-1) + \pi = -\pi/4 + \pi = 3\pi/4\)</p>
+                            <p class="text-gray-600 mt-2">The argument of \(z = i\) is \(\arg(z) = \pi/2\) (as it lies on the positive imaginary axis)</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">3.3 Properties of Modulus and Argument</h3>
+                    <p class="text-gray-700 mb-4">Key properties for calculations:</p>
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li>\(|z_1 \cdot z_2| = |z_1| \cdot |z_2|\)</li>
+                        <li>\(|z_1 / z_2| = |z_1| / |z_2|\)</li>
+                        <li>\(\arg(z_1 \cdot z_2) = \arg(z_1) + \arg(z_2)\) (modulo \(2\pi\))</li>
+                        <li>\(\arg(z_1 / z_2) = \arg(z_1) - \arg(z_2)\) (modulo \(2\pi\))</li>
+                        <li>\(\arg(\overline{z}) = -\arg(z)\)</li>
+                    </ul>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">For \(z_1 = 1 + i\) and \(z_2 = -1 + i\):</p>
+                            <p class="text-gray-600">\(|z_1| = \sqrt{1^2 + 1^2} = \sqrt{2}\) and \(|z_2| = \sqrt{1^2 + 1^2} = \sqrt{2}\)</p>
+                            <p class="text-gray-600">\(|z_1 \cdot z_2| = |(1 + i)(-1 + i)| = |(-1 - i + i + i^2)| = |-1 - 1| = 2\)</p>
+                            <p class="text-gray-600">\(|z_1| \cdot |z_2| = \sqrt{2} \cdot \sqrt{2} = 2\)</p>
+                            <p class="text-gray-600">This verifies that \(|z_1 \cdot z_2| = |z_1| \cdot |z_2|\)</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Polar Form Section -->
+                <section class="mb-12" id="polar-form">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">4. Polar Form and Euler's Formula</h2>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">4.1 Polar Form</h3>
+                    <p class="text-gray-700 mb-4">Using the modulus and argument, a complex number can be written in polar form:</p>
+                    <div class="math-container">
+                        \[ z = |z|(\cos(\arg(z)) + i\sin(\arg(z))) \]
+                    </div>
+                    <p class="text-gray-700 mb-4">We often denote the modulus as \(r = |z|\) and the argument as \(\theta = \arg(z)\), giving:</p>
+                    <div class="math-container">
+                        \[ z = r(\cos\theta + i\sin\theta) \]
+                    </div>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mb-6">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">The complex number \(z = 3 + 3i\) has modulus \(|z| = \sqrt{3^2 + 3^2} = 3\sqrt{2}\) and argument \(\arg(z) = \arctan(3/3) = \arctan(1) = \pi/4\).</p>
+                            <p class="text-gray-600 mt-2">In polar form: \(z = 3\sqrt{2}(\cos(\pi/4) + i\sin(\pi/4))\)</p>
+                            <p class="text-gray-600 mt-2">Converting from polar to rectangular form: \(z = 2e^{i\pi/3} = 2(\cos(\pi/3) + i\sin(\pi/3)) = 2 \cdot (1/2 + i\sqrt{3}/2) = 1 + i\sqrt{3}\)</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">4.2 Euler's Formula</h3>
+                    <p class="text-gray-700 mb-4">Euler's formula establishes a profound connection between trigonometric functions and the complex exponential:</p>
+                    <div class="math-container">
+                        \[ e^{i\theta} = \cos\theta + i\sin\theta \]
+                    </div>
+                    <p class="text-gray-700 mb-4">Using Euler's formula, the polar form can be written more compactly as:</p>
+                    <div class="math-container">
+                        \[ z = re^{i\theta} \]
+                    </div>
+                    <p class="text-gray-700 mb-4">This exponential form is particularly useful for multiplication, division, and powers of complex numbers.</p>
+                    
+                    <div class="bg-purple-50 rounded-lg p-6 mb-6 border-l-4 border-purple-500">
+                        <h4 class="text-lg font-medium text-purple-900 mb-2">De Moivre's Formula:</h4>
+                        <p class="text-purple-800">For any complex number in polar form \(z = re^{i\theta}\) and any integer \(n\):</p>
+                        <div class="math-container">
+                            \[ z^n = r^ne^{in\theta} = r^n(\cos(n\theta) + i\sin(n\theta)) \]
+                        </div>
+                        <p class="text-purple-800 mt-2">Example using De Moivre's formula to find \((1+i)^{13}\):</p>
+                        <p class="text-purple-800">First, express in polar form: \(1+i = \sqrt{2}e^{i\pi/4}\)</p>
+                        <p class="text-purple-800">Then apply De Moivre: \((1+i)^{13} = (\sqrt{2})^{13}e^{i13\pi/4} = 2^{6.5}e^{i13\pi/4}\)</p>
+                        <p class="text-purple-800">Simplify the argument: \(13\pi/4 = 3\pi + \pi/4\), so \(e^{i13\pi/4} = e^{i\pi/4}e^{3\pi i} = e^{i\pi/4}(-1)^3 = -e^{i\pi/4}\)</p>
+                        <p class="text-purple-800">Therefore: \((1+i)^{13} = -2^{6.5}e^{i\pi/4} = -2^{6.5}(\cos(\pi/4) + i\sin(\pi/4)) = -2^{6.5} \cdot (1/\sqrt{2} + i/\sqrt{2}) = -64 - 64i\)</p>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">4.3 Multiplication and Division in Polar Form</h3>
+                    <p class="text-gray-700 mb-4">In polar form, multiplication and division become simpler:</p>
+                    <p class="text-gray-700 mb-2">For \(z_1 = r_1e^{i\theta_1}\) and \(z_2 = r_2e^{i\theta_2}\):</p>
+                    <div class="math-container">
+                        \[ z_1 \cdot z_2 = r_1r_2e^{i(\theta_1 + \theta_2)} \]
+                        \[ \frac{z_1}{z_2} = \frac{r_1}{r_2}e^{i(\theta_1 - \theta_2)} \]
+                    </div>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">Let \(z_1 = 2e^{i\pi/6}\) and \(z_2 = 3e^{i\pi/4}\)</p>
+                            <p class="text-gray-600">\(z_1 \cdot z_2 = 2 \cdot 3 \cdot e^{i(\pi/6 + \pi/4)} = 6e^{i5\pi/12}\)</p>
+                            <p class="text-gray-600">\(\frac{z_1}{z_2} = \frac{2}{3}e^{i(\pi/6 - \pi/4)} = \frac{2}{3}e^{-i\pi/12}\)</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Polynomials Section -->
+                <section class="mb-12" id="polynomials">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">5. Complex Numbers in Polynomials</h2>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">5.1 Fundamental Theorem of Algebra</h3>
+                    <p class="text-gray-700 mb-6">The Fundamental Theorem of Algebra states that every non-constant polynomial with complex coefficients has at least one complex root. This means that any polynomial of degree \(n\) has exactly \(n\) roots when counted with multiplicity.</p>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">5.2 Finding Roots of Polynomials</h3>
+                    <p class="text-gray-700 mb-4">For quadratic polynomials \(az^2 + bz + c\), the roots are given by:</p>
+                    <div class="math-container">
+                        \[ z = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]
+                    </div>
+                    <p class="text-gray-700 mb-4">When the discriminant \(b^2 - 4ac < 0\), the roots are complex conjugates.</p>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mb-6">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">Find the roots of \(p(z) = z^2 - 4z + 13\)</p>
+                            <p class="text-gray-600">Using the quadratic formula: \(z = \frac{4 \pm \sqrt{16 - 52}}{2} = \frac{4 \pm \sqrt{-36}}{2} = \frac{4 \pm 6i}{2} = 2 \pm 3i\)</p>
+                            <p class="text-gray-600">The roots are \(z_1 = 2 + 3i\) and \(z_2 = 2 - 3i\) (complex conjugates)</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">5.3 Polynomial Division and Factorization</h3>
+                    <p class="text-gray-700 mb-4">The polynomial division algorithm is a method to divide one polynomial by another, resulting in a quotient polynomial and a remainder.</p>
+                    <p class="text-gray-700 mb-4">Key facts about polynomials and their factors:</p>
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li>If \(r\) is a root of polynomial \(p(z)\), then \((z-r)\) is a factor of \(p(z)\)</li>
+                        <li>A polynomial of degree \(n\) can be factored as \(p(z) = a_n(z-r_1)(z-r_2)...(z-r_n)\) where \(r_1, r_2, ..., r_n\) are the roots</li>
+                        <li>For polynomials with real coefficients, complex roots always appear in conjugate pairs</li>
+                    </ul>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example: Polynomial Division</h4>
+                            <p class="text-gray-600">To divide \(p(z) = z^3 + z - 2\) by \(d(z) = z - 1\), we use the division algorithm:</p>
+                            <p class="text-gray-600">Step 1: \(z^3 \div (z-1) = z^2 + z + 1\) with remainder 0</p>
+                            <p class="text-gray-600">Step 2: \(z \div (z-1) = 1\) with remainder 1</p>
+                            <p class="text-gray-600">Step 3: \(-2 \div (z-1) = 0\) with remainder -2</p>
+                            <p class="text-gray-600">Combining these steps: \(p(z) = (z-1)(z^2 + z + 1) + (-1)\)</p>
+                            
+                            <h4 class="text-lg font-medium text-gray-900 mt-6 mb-2">Example: Factoring a Polynomial with Complex Roots</h4>
+                            <p class="text-gray-600">For the polynomial \(p(z) = z^4 - 4z^2 + 16\), we can factor as follows:</p>
+                            <p class="text-gray-600">Step 1: Substitute \(u = z^2\) to get \(p(u) = u^2 - 4u + 16\)</p>
+                            <p class="text-gray-600">Step 2: Find the roots of this quadratic: \(u = \frac{4 \pm \sqrt{16 - 64}}{2} = \frac{4 \pm \sqrt{-48}}{2} = 2 \pm 2\sqrt{3}i\)</p>
+                            <p class="text-gray-600">Step 3: Substitute back to find \(z^2 = 2 \pm 2\sqrt{3}i\), so \(z = \pm\sqrt{2 \pm 2\sqrt{3}i}\)</p>
+                            <p class="text-gray-600">Step 4: Express as a product: \(p(z) = (z^2 - (2 + 2\sqrt{3}i))(z^2 - (2 - 2\sqrt{3}i))\)</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Taylor Polynomials Section -->
+                <section class="mb-12" id="taylor">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">6. Taylor Polynomials with Complex Variables</h2>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">6.1 Approximating Functions with Taylor Series</h3>
+                    <p class="text-gray-700 mb-4">Taylor polynomials can be extended to complex variables, allowing for approximation of complex functions:</p>
+                    <div class="math-container">
+                        \[ f(z) \approx f(z_0) + f'(z_0)(z-z_0) + \frac{f''(z_0)}{2!}(z-z_0)^2 + \cdots + \frac{f^{(n)}(z_0)}{n!}(z-z_0)^n \]
+                    </div>
+                    <p class="text-gray-700 mb-6">This is particularly useful for computing values of transcendental functions with complex arguments.</p>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mb-6">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">The Taylor series for \(e^z\) around \(z_0 = 0\) is:</p>
+                            <div class="math-container">
+                                \[e^z = 1 + z + \frac{z^2}{2!} + \frac{z^3}{3!} + \cdots\]
+                            </div>
+                            <p class="text-gray-600">To approximate \(e^{1+i}\), we substitute \(z = 1+i\):</p>
+                            <div class="math-container">
+                                \[e^{1+i} \approx 1 + (1+i) + \frac{(1+i)^2}{2!} + \frac{(1+i)^3}{3!} + \frac{(1+i)^4}{4!}\]
+                            </div>
+                            <p class="text-gray-600">Computing each term:</p>
+                            <p class="text-gray-600">\((1+i)^2 = 1 + 2i + i^2 = 1 + 2i - 1 = 2i\)</p>
+                            <p class="text-gray-600">\((1+i)^3 = (1+i)(2i) = 2i + 2i^2 = 2i - 2 = -2 + 2i\)</p>
+                            <p class="text-gray-600">\((1+i)^4 = (1+i)(-2+2i) = -2 - 2i + 2i + 2i^2 = -2 - 2 = -4\)</p>
+                            <p class="text-gray-600">Substituting these values:</p>
+                            <div class="math-container">
+                                \[e^{1+i} \approx 1 + (1+i) + \frac{2i}{2} + \frac{-2+2i}{6} + \frac{-4}{24} = 1 + 1 + i + i - \frac{1}{3} + \frac{1}{3}i - \frac{1}{6} = \frac{3}{2} + \frac{7}{3}i\]
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">6.2 Applications in Complex Analysis</h3>
+                    <p class="text-gray-700 mb-4">Taylor series in the complex plane have numerous applications, including:</p>
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li>Evaluating complex integrals via residue theory</li>
+                        <li>Studying the analytic properties of complex functions</li>
+                        <li>Approximating solutions to complex differential equations</li>
+                        <li>Investigating convergence regions for power series</li>
+                    </ul>
+                </section>
+                
+                <!-- Differential Equations Section -->
+                <section class="mb-12" id="diff-equations">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">7. Differential Equations with Complex Solutions</h2>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">7.1 First-Order Differential Equations</h3>
+                    <p class="text-gray-700 mb-4">Complex numbers often emerge in the solutions to differential equations. For a first-order linear differential equation:</p>
+                    <div class="math-container">
+                        \[ \frac{dy}{dt} + p(t)y = q(t) \]
+                    </div>
+                    <p class="text-gray-700 mb-6">The general solution can include complex exponentials when the homogeneous equation has complex eigenvalues.</p>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mb-6">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">For the differential equation \(\frac{dy}{dt} + 3y = 2e^{2i t}\)</p>
+                            <p class="text-gray-600">We try a particular solution of the form \(y_p(t) = Ae^{2i t}\) where \(A\) is a complex constant</p>
+                            <p class="text-gray-600">Substituting into the equation:</p>
+                            <p class="text-gray-600">\(2iAe^{2i t} + 3Ae^{2i t} = 2e^{2i t}\)</p>
+                            <p class="text-gray-600">\(A(2i + 3) = 2\)</p>
+                            <p class="text-gray-600">\(A = \frac{2}{3 + 2i} = \frac{2(3 - 2i)}{(3 + 2i)(3 - 2i)} = \frac{6 - 4i}{9 + 4} = \frac{6 - 4i}{13}\)</p>
+                            <p class="text-gray-600">The particular solution is \(y_p(t) = \frac{6 - 4i}{13}e^{2i t}\)</p>
+                            <p class="text-gray-600">The complete solution will also include the complementary solution \(y_c(t) = Ce^{-3t}\), giving \(y(t) = Ce^{-3t} + \frac{6 - 4i}{13}e^{2i t}\)</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">7.2 Second-Order Differential Equations</h3>
+                    <p class="text-gray-700 mb-4">Second-order linear differential equations often have complex solutions, especially in systems involving oscillations:</p>
+                    <div class="math-container">
+                        \[ \frac{d^2y}{dt^2} + a\frac{dy}{dt} + by = f(t) \]
+                    </div>
+                    <p class="text-gray-700 mb-6">When the characteristic equation \(r^2 + ar + b = 0\) has complex roots \(r = \alpha \pm i\beta\), the solution contains terms like \(e^{\alpha t}\cos(\beta t)\) and \(e^{\alpha t}\sin(\beta t)\).</p>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mb-6">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example:</h4>
+                            <p class="text-gray-600">For the differential equation \(\frac{d^2y}{dt^2} + 4\frac{dy}{dt} + 13y = 10\cos(t)\)</p>
+                            <p class="text-gray-600">The characteristic equation is \(r^2 + 4r + 13 = 0\)</p>
+                            <p class="text-gray-600">Using the quadratic formula: \(r = \frac{-4 \pm \sqrt{16 - 52}}{2} = \frac{-4 \pm \sqrt{-36}}{2} = -2 \pm 3i\)</p>
+                            <p class="text-gray-600">The complementary solution is \(y_c(t) = e^{-2t}(c_1\cos(3t) + c_2\sin(3t))\)</p>
+                            <p class="text-gray-600">For the particular solution, we can use complex methods, considering \(10\cos(t) = 5e^{it} + 5e^{-it}\)</p>
+                            <p class="text-gray-600">This leads to a particular solution of the form \(y_p(t) = A\cos(t) + B\sin(t)\)</p>
+                            <p class="text-gray-600">After determining the constants, the complete solution is:</p>
+                            <p class="text-gray-600">\(y(t) = e^{-2t}(c_1\cos(3t) + c_2\sin(3t)) + \cos(t) + \sin(t)\)</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">7.3 Complex Methods for Solving Differential Equations</h3>
+                    <p class="text-gray-700 mb-4">Complex techniques can simplify the solution of differential equations with trigonometric forcing functions:</p>
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li>Replace \(\cos(\omega t)\) with \(\frac{e^{i\omega t} + e^{-i\omega t}}{2}\)</li>
+                        <li>Replace \(\sin(\omega t)\) with \(\frac{e^{i\omega t} - e^{-i\omega t}}{2i}\)</li>
+                        <li>Solve the resulting equation with complex exponentials</li>
+                        <li>Extract the real or imaginary part as needed</li>
+                    </ul>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example: Using Complex Methods</h4>
+                            <p class="text-gray-600">For the differential equation \(y'' + 2y' + 5y = 10e^{-t}\cos(3t)\)</p>
+                            <p class="text-gray-600">We can rewrite this as \(y'' + 2y' + 5y = 5e^{(-1+3i)t} + 5e^{(-1-3i)t}\)</p>
+                            <p class="text-gray-600">Solving for the complex exponential inputs separately and then taking the real part of the result yields the solution more efficiently than direct methods.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Electrical Engineering Applications Section -->
+                <section class="mb-12" id="electrical">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">8. Applications in Electrical Engineering</h2>
+                    
+                    <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-medium text-blue-900 mb-3">8.1 AC Circuit Analysis</h3>
+                        <p class="text-blue-800 mb-4">Complex numbers are essential for analyzing alternating current (AC) circuits. The impedance \(Z\) of a circuit can be expressed as a complex number:</p>
+                        <div class="math-container">
+                            \[ Z = R + jX \]
+                        </div>
+                        <p class="text-blue-800 mb-4">where \(R\) is the resistance and \(X\) is the reactance. Note that in electrical engineering, \(j\) is commonly used instead of \(i\) to avoid confusion with current.</p>
+                        <p class="text-blue-800 mb-4">The impedance of basic components:</p>
+                        <ul class="list-disc ml-6 mb-4 text-blue-800">
+                            <li>Resistor (R): \(Z_R = R\) (purely real)</li>
+                            <li>Capacitor (C): \(Z_C = -j \frac{1}{\omega C}\) (purely imaginary, negative)</li>
+                            <li>Inductor (L): \(Z_L = j\omega L\) (purely imaginary, positive)</li>
+                        </ul>
+                        <p class="text-blue-800 mb-4">Ohm's law for AC circuits is expressed as:</p>
+                        <div class="math-container">
+                            \[ V = ZI \]
+                        </div>
+                        <p class="text-blue-800 mb-4">where \(V\) and \(I\) are phasors representing voltage and current.</p>
+                        
+                        <h4 class="text-lg font-medium text-blue-900 mb-2">Example: RLC Series Circuit</h4>
+                        <p class="text-blue-800">In a series RLC circuit with \(R = 10\Omega\), \(L = 50\text{ mH}\), and \(C = 100\text{ μF}\) at frequency \(\omega = 100\text{ rad/s}\):</p>
+                        <p class="text-blue-800">\(Z_R = 10\Omega\)</p>
+                        <p class="text-blue-800">\(Z_L = j\omega L = j \cdot 100 \cdot 0.05 = j5\Omega\)</p>
+                        <p class="text-blue-800">\(Z_C = -j \frac{1}{\omega C} = -j \frac{1}{100 \cdot 100 \times 10^{-6}} = -j100\Omega\)</p>
+                        <p class="text-blue-800">Total impedance: \(Z = Z_R + Z_L + Z_C = 10 + j5 - j100 = 10 - j95\Omega\)</p>
+                        <p class="text-blue-800">Magnitude: \(|Z| = \sqrt{10^2 + 95^2} \approx 95.5\Omega\)</p>
+                        <p class="text-blue-800">Phase angle: \(\phi = \arctan(-95/10) \approx -84°\)</p>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-medium text-blue-900 mb-3">8.2 Phasors and Sinusoidal Signals</h3>
+                        <p class="text-blue-800 mb-4">A sinusoidal signal \(v(t) = V_m\cos(\omega t + \phi)\) can be represented by the complex number (phasor):</p>
+                        <div class="math-container">
+                            \[ V = V_m e^{j\phi} \]
+                        </div>
+                        <p class="text-blue-800 mb-4">This simplifies calculations involving multiple sinusoidal signals of the same frequency.</p>
+                        
+                        <h4 class="text-lg font-medium text-blue-900 mb-2">Example: Adding Sinusoidal Signals</h4>
+                        <p class="text-blue-800">Consider two voltage sources: \(v_1(t) = 5\cos(60\pi t)\) and \(v_2(t) = 8\cos(60\pi t - \pi/3)\)</p>
+                        <p class="text-blue-800">As phasors: \(V_1 = 5e^{j0} = 5\) and \(V_2 = 8e^{-j\pi/3} = 8(\cos(-\pi/3) + j\sin(-\pi/3)) = 8(1/2 - j\sqrt{3}/2) = 4 - j4\sqrt{3}\)</p>
+                        <p class="text-blue-800">Sum: \(V = V_1 + V_2 = 5 + 4 - j4\sqrt{3} = 9 - j4\sqrt{3} \approx 9 - j6.93\)</p>
+                        <p class="text-blue-800">Magnitude: \(|V| = \sqrt{9^2 + 6.93^2} \approx 11.33\)</p>
+                        <p class="text-blue-800">Phase: \(\phi = \arctan(-6.93/9) \approx -37.6°\)</p>
+                        <p class="text-blue-800">Therefore: \(v(t) = 11.33\cos(60\pi t - 37.6°)\)</p>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-medium text-blue-900 mb-3">8.3 Frequency Response and Bode Plots</h3>
+                        <p class="text-blue-800 mb-4">Transfer functions in control systems and signal processing are often expressed as functions of the complex variable \(s = \sigma + j\omega\) (in the Laplace domain) or \(z = re^{j\theta}\) (in the Z-domain for discrete systems).</p>
+                        
+                        <h4 class="text-lg font-medium text-blue-900 mb-2">Example: Low-Pass Filter</h4>
+                        <p class="text-blue-800">A simple RC low-pass filter has the transfer function:</p>
+                        <div class="math-container">
+                            \[H(s) = \frac{1}{RCs + 1}\]
+                        </div>
+                        <p class="text-blue-800">Substituting \(s = j\omega\) for frequency response analysis:</p>
+                        <div class="math-container">
+                            \[H(j\omega) = \frac{1}{RC(j\omega) + 1} = \frac{1}{1 + j\omega RC}\]
+                        </div>
+                        <p class="text-blue-800">Magnitude response: \(|H(j\omega)| = \frac{1}{\sqrt{1 + (\omega RC)^2}}\)</p>
+                        <p class="text-blue-800">Phase response: \(\angle H(j\omega) = -\arctan(\omega RC)\)</p>
+                        <p class="text-blue-800">This complex function describes how the filter attenuates and phase-shifts sinusoidal inputs at different frequencies.</p>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-medium text-blue-900 mb-3">8.4 Power Calculations</h3>
+                        <p class="text-blue-800 mb-4">The apparent power \(S\) in an AC circuit is a complex number:</p>
+                        <div class="math-container">
+                            \[ S = P + jQ \]
+                        </div>
+                        <p class="text-blue-800 mb-4">where \(P\) is the real power (measured in watts) and \(Q\) is the reactive power (measured in volt-amperes reactive).</p>
+                        <p class="text-blue-800 mb-4">For a load with impedance \(Z = R + jX\) and current \(I\):</p>
+                        <div class="math-container">
+                            \[S = VI^* = |I|^2 Z = |I|^2 (R + jX) = |I|^2 R + j|I|^2 X\]
+                        </div>
+                        <p class="text-blue-800 mb-4">where \(I^*\) is the complex conjugate of \(I\).</p>
+                        
+                        <h4 class="text-lg font-medium text-blue-900 mb-2">Example: Power Factor Correction</h4>
+                        <p class="text-blue-800">A load draws 100 kVA at a power factor of 0.8 lagging. This means:</p>
+                        <p class="text-blue-800">\(S = 100e^{j\cos^{-1}(0.8)} = 100e^{j36.9°} = 80 + j60\) kVA</p>
+                        <p class="text-blue-800">To improve the power factor to 0.95 lagging, a capacitor is added in parallel with the load.</p>
+                        <p class="text-blue-800">The new desired apparent power is \(S' = P + jQ' = 80 + jQ'\) where \(Q'\) is calculated from:</p>
+                        <p class="text-blue-800">\(\tan(\cos^{-1}(0.95)) = Q'/80\), giving \(Q' \approx 26.3\) kVAR</p>
+                        <p class="text-blue-800">The capacitor must supply \(Q_C = Q - Q' = 60 - 26.3 = 33.7\) kVAR</p>
+                    </div>
+                </section>
+                
+                <!-- Problem-Solving Strategies Section -->
+                <section class="mb-12" id="problem-solving">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">9. Problem-Solving Strategies</h2>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">9.1 General Approach to Complex Number Problems</h3>
+                    <p class="text-gray-700 mb-4">When solving problems involving complex numbers, consider these strategies:</p>
+                    <ol class="list-decimal ml-6 mb-6 text-gray-700">
+                        <li><strong>Choose the appropriate form</strong>: Rectangular form is best for addition/subtraction, while polar form is best for multiplication/division/powers</li>
+                        <li><strong>Convert between forms strategically</strong>: Don't convert if it makes the calculation more complicated</li>
+                        <li><strong>Use properties</strong>: Leverage properties of modulus, argument, and conjugates to simplify calculations</li>
+                        <li><strong>Visualize</strong>: Use the complex plane to gain geometric insight</li>
+                        <li><strong>Check your answer</strong>: Verify that your solution matches the original problem</li>
+                    </ol>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">9.2 Common Pitfalls and Misconceptions</h3>
+                    <p class="text-gray-700 mb-4">Avoid these common mistakes when working with complex numbers:</p>
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li>Forgetting that \(\sqrt{a^2} = |a|\), not just \(a\) (important when working with complex values)</li>
+                        <li>Incorrectly applying the laws of exponents with complex bases</li>
+                        <li>Mixing up the rules for arguments when multiplying/dividing versus adding/subtracting</li>
+                        <li>Forgetting that angles are only defined modulo \(2\pi\)</li>
+                        <li>Applying real-number operations like "\(\sqrt{ab} = \sqrt{a}\sqrt{b}\)" without considering branch cuts in the complex plane</li>
+                    </ul>
+                    
+                    <div class="card bg-white rounded-lg overflow-hidden border border-gray-200 mb-6">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Example: Solving a Complex Equation</h4>
+                            <p class="text-gray-600">Solve the equation \(z^2 = i\)</p>
+                            <p class="text-gray-600">Strategy: Use polar form to find the square root</p>
+                            <p class="text-gray-600">Step 1: Express \(i\) in polar form \(i = e^{i\pi/2}\)</p>
+                            <p class="text-gray-600">Step 2: Use the formula \(z^n = re^{i\theta} \implies z = r^{1/n}e^{i\theta/n + i2\pi k/n}\) for \(k = 0,1,...,n-1\)</p>
+                            <p class="text-gray-600">Step 3: With \(n = 2\), we get \(z = e^{i\pi/4 + i\pi k}\) for \(k = 0,1\)</p>
+                            <p class="text-gray-600">Step 4: This gives \(z_1 = e^{i\pi/4} = \frac{1}{\sqrt{2}} + i\frac{1}{\sqrt{2}}\) and \(z_2 = e^{i5\pi/4} = -\frac{1}{\sqrt{2}} - i\frac{1}{\sqrt{2}}\)</p>
+                            <p class="text-gray-600">Verification: \(z_1^2 = (\frac{1}{\sqrt{2}} + i\frac{1}{\sqrt{2}})^2 = \frac{1}{2} + i\frac{1}{\sqrt{2}}\frac{1}{\sqrt{2}} + i\frac{1}{\sqrt{2}}\frac{1}{\sqrt{2}} + i^2\frac{1}{2} = \frac{1}{2} + i - \frac{1}{2} = i\)</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">9.3 Computational Tools and Resources</h3>
+                    <p class="text-gray-700 mb-4">Several computational tools can assist with complex number calculations:</p>
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li><strong>Maple</strong>: Powerful symbolic mathematics software that handles complex numbers seamlessly</li>
+                        <li><strong>MATLAB/Python</strong>: Both provide built-in support for complex arithmetic and visualization</li>
+                        <li><strong>Scientific calculators</strong>: Many models allow direct entry and manipulation of complex numbers</li>
+                        <li><strong>Online resources</strong>: Websites like WolframAlpha can handle complex calculations and provide step-by-step solutions</li>
+                    </ul>
+                </section>
+                
+                <!-- Properties and Identities Section -->
+                <section class="mb-12" id="properties">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">10. Properties and Identities</h2>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">10.1 Basic Properties</h3>
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li>\(i^2 = -1\)</li>
+                        <li>\(i^3 = -i\)</li>
+                        <li>\(i^4 = 1\)</li>
+                        <li>\(|z_1 \cdot z_2| = |z_1| \cdot |z_2|\)</li>
+                        <li>\(|z_1 / z_2| = |z_1| / |z_2|\)</li>
+                        <li>\(\arg(z_1 \cdot z_2) = \arg(z_1) + \arg(z_2)\) (modulo \(2\pi\))</li>
+                        <li>\(\arg(z_1 / z_2) = \arg(z_1) - \arg(z_2)\) (modulo \(2\pi\))</li>
+                    </ul>
+                    
+                    <h3 class="text-xl font-medium text-gray-900 mb-3">10.2 Useful Identities</h3>
+                    <ul class="list-disc ml-6 mb-6 text-gray-700">
+                        <li>\(e^{i\pi} + 1 = 0\) (Euler's identity)</li>
+                        <li>\(\cos\theta = \frac{e^{i\theta} + e^{-i\theta}}{2}\)</li>
+                        <li>\(\sin\theta = \frac{e^{i\theta} - e^{-i\theta}}{2i}\)</li>
+                        <li>\(e^{i\theta} = \cos\theta + i\sin\theta\) (Euler's formula)</li>
+                        <li>\(\sin(3\theta) = 3\cos^2\theta\sin\theta - \sin^3\theta\) (from De Moivre's formula)</li>
+                        <li>\(\cos(3\theta) = \cos^3\theta - 3\cos\theta\sin^2\theta\) (from De Moivre's formula)</li>
+                    </ul>
+                </section>
+                
+                <!-- Conclusion -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Conclusion</h2>
+                    
+                    <p class="text-gray-700 mb-4">Complex numbers are an essential mathematical tool in engineering, particularly in electrical fields. They provide elegant solutions to problems involving oscillations, waves, and AC circuits. Understanding complex numbers and their operations is fundamental for advanced concepts in signal processing, control systems, and electromagnetic theory.</p>
+                    
+                    <p class="text-gray-700 mb-4">This comprehensive guide covers the key aspects of complex numbers, from basic operations to advanced applications in differential equations and electrical engineering. By mastering these concepts, you'll have a powerful mathematical tool at your disposal for solving a wide range of engineering problems.</p>
+                </section>
+                
+                <!-- Glossary -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Glossary of Terms</h2>
+                    
+                    <dl class="ml-6">
+                        <dt class="font-semibold text-gray-900">Complex number</dt>
+                        <dd class="text-gray-700 mb-2">A number of the form \(a + bi\) where \(a\) and \(b\) are real numbers and \(i\) is the imaginary unit</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Imaginary unit</dt>
+                        <dd class="text-gray-700 mb-2">The number \(i\) where \(i^2 = -1\)</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Real part</dt>
+                        <dd class="text-gray-700 mb-2">The coefficient \(a\) in the complex number \(a + bi\)</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Imaginary part</dt>
+                        <dd class="text-gray-700 mb-2">The coefficient \(b\) in the complex number \(a + bi\)</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Modulus</dt>
+                        <dd class="text-gray-700 mb-2">The absolute value of a complex number, equal to \(|z| = \sqrt{a^2 + b^2}\)</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Argument</dt>
+                        <dd class="text-gray-700 mb-2">The angle \(\theta\) in the polar representation of a complex number</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Complex conjugate</dt>
+                        <dd class="text-gray-700 mb-2">For \(z = a + bi\), the conjugate is \(\overline{z} = a - bi\)</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Polar form</dt>
+                        <dd class="text-gray-700 mb-2">Representation of a complex number as \(z = re^{i\theta}\) or \(z = r(\cos\theta + i\sin\theta)\)</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Euler's formula</dt>
+                        <dd class="text-gray-700 mb-2">The identity \(e^{i\theta} = \cos\theta + i\sin\theta\)</dd>
+                        
+                        <dt class="font-semibold text-gray-900">De Moivre's formula</dt>
+                        <dd class="text-gray-700 mb-2">The identity \((re^{i\theta})^n = r^ne^{in\theta} = r^n(\cos(n\theta) + i\sin(n\theta))\)</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Phasor</dt>
+                        <dd class="text-gray-700 mb-2">A complex number representing a sinusoidal function in terms of magnitude and phase</dd>
+                        
+                        <dt class="font-semibold text-gray-900">Impedance</dt>
+                        <dd class="text-gray-700 mb-2">A complex number representing the opposition to current flow in an AC circuit</dd>
+                    </dl>
+                </section>
+            </div>
+        </div>
     </div>
-    
-    <h3 style="color: #3498db;">1.2 The Complex Plane</h3>
-    <p>Complex numbers can be visualized as points in a two-dimensional plane called the complex plane or Argand diagram. The horizontal axis represents the real part, and the vertical axis represents the imaginary part.</p>
-    
-    <div style="text-align: center; margin: 20px 0;">
-        <figure>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Complex_number_illustration.svg" alt="Complex Plane Illustration" style="max-width: 100%; height: auto;">
-            <figcaption>The complex plane showing a complex number \(z = a + bi\)</figcaption>
-        </figure>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">2. Operations with Complex Numbers</h2>
-    
-    <h3 style="color: #3498db;">2.1 Addition and Subtraction</h3>
-    <p>Complex numbers are added or subtracted by combining their real and imaginary parts separately:</p>
-    <p>\[ (a + bi) + (c + di) = (a + c) + (b + d)i \]</p>
-    <p>\[ (a + bi) - (c + di) = (a - c) + (b - d)i \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>\((3 + 2i) + (1 + 5i) = (3 + 1) + (2 + 5)i = 4 + 7i\)</p>
-        <p>\((3 + 2i) - (1 + 5i) = (3 - 1) + (2 - 5)i = 2 - 3i\)</p>
-    </div>
-    
-    <h3 style="color: #3498db;">2.2 Multiplication</h3>
-    <p>Complex numbers are multiplied using algebraic distribution, remembering that \(i^2 = -1\):</p>
-    <p>\[ (a + bi)(c + di) = ac + adi + bci + bdi^2 \]</p>
-    <p>\[ = (ac - bd) + (ad + bc)i \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>\((3 + 2i)(1 + 5i) = 3 \cdot 1 + 3 \cdot 5i + 2i \cdot 1 + 2i \cdot 5i\)</p>
-        <p>\(= 3 + 15i + 2i + 10i^2 = 3 + 17i + 10(-1) = 3 + 17i - 10 = -7 + 17i\)</p>
-    </div>
-    
-    <h3 style="color: #3498db;">2.3 Complex Conjugate</h3>
-    <p>The complex conjugate of \(z = a + bi\), denoted by \(\overline{z}\) or \(z^*\), is defined as:</p>
-    <p>\[ \overline{z} = a - bi \]</p>
-    <p>The complex conjugate is useful for division and has several important properties:</p>
-    <ul>
-        <li>\(z \cdot \overline{z} = |z|^2 = a^2 + b^2\)</li>
-        <li>\(\overline{z_1 + z_2} = \overline{z_1} + \overline{z_2}\)</li>
-        <li>\(\overline{z_1 \cdot z_2} = \overline{z_1} \cdot \overline{z_2}\)</li>
-    </ul>
-    
-    <h3 style="color: #3498db;">2.4 Division</h3>
-    <p>Division of complex numbers is performed by multiplying both numerator and denominator by the complex conjugate of the denominator:</p>
-    <p>\[ \frac{z_1}{z_2} = \frac{a + bi}{c + di} = \frac{(a + bi)(c - di)}{(c + di)(c - di)} = \frac{(ac + bd) + (bc - ad)i}{c^2 + d^2} \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>\(\frac{3 + 2i}{1 + i} = \frac{(3 + 2i)(1 - i)}{(1 + i)(1 - i)} = \frac{3 - 3i + 2i - 2i^2}{1^2 - i^2} = \frac{3 - i + 2}{1 + 1} = \frac{5 - i}{2} = \frac{5}{2} - \frac{1}{2}i\)</p>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">3. Modulus and Argument</h2>
-    
-    <h3 style="color: #3498db;">3.1 Modulus</h3>
-    <p>The modulus (or absolute value) of a complex number \(z = a + bi\) is the distance from the origin to the point \(z\) in the complex plane:</p>
-    <p>\[ |z| = \sqrt{a^2 + b^2} \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>The modulus of \(z = 3 + 4i\) is \(|z| = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5\)</p>
-    </div>
-    
-    <h3 style="color: #3498db;">3.2 Argument</h3>
-    <p>The argument of a complex number \(z = a + bi\) is the angle in radians between the positive real axis and the line joining the origin to the point \(z\) in the complex plane.</p>
-    <p>For \(z \neq 0\), the argument is defined as:</p>
-    <p>\[ \arg(z) = \begin{cases} 
-      \arctan(b/a) & \text{if } a > 0 \\
-      \arctan(b/a) + \pi & \text{if } a < 0, b \geq 0 \\
-      \arctan(b/a) - \pi & \text{if } a < 0, b < 0 \\
-      \pi/2 & \text{if } a = 0, b > 0 \\
-      -\pi/2 & \text{if } a = 0, b < 0
-   \end{cases} \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>The argument of \(z = -3 + 3i\) is \(\arg(z) = \arctan(3/(-3)) + \pi = \arctan(-1) + \pi = -\pi/4 + \pi = 3\pi/4\)</p>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">4. Polar Form and Euler's Formula</h2>
-    
-    <h3 style="color: #3498db;">4.1 Polar Form</h3>
-    <p>Using the modulus and argument, a complex number can be written in polar form:</p>
-    <p>\[ z = |z|(\cos(\arg(z)) + i\sin(\arg(z))) \]</p>
-    <p>We often denote the modulus as \(r = |z|\) and the argument as \(\theta = \arg(z)\), giving:</p>
-    <p>\[ z = r(\cos\theta + i\sin\theta) \]</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>The complex number \(z = 3 + 3i\) has modulus \(|z| = \sqrt{3^2 + 3^2} = 3\sqrt{2}\) and argument \(\arg(z) = \arctan(3/3) = \arctan(1) = \pi/4\).</p>
-        <p>In polar form: \(z = 3\sqrt{2}(\cos(\pi/4) + i\sin(\pi/4))\)</p>
-    </div>
-    
-    <h3 style="color: #3498db;">4.2 Euler's Formula</h3>
-    <p>Euler's formula establishes a profound connection between trigonometric functions and the complex exponential:</p>
-    <p>\[ e^{i\theta} = \cos\theta + i\sin\theta \]</p>
-    <p>Using Euler's formula, the polar form can be written more compactly as:</p>
-    <p>\[ z = re^{i\theta} \]</p>
-    <p>This exponential form is particularly useful for multiplication, division, and powers of complex numbers.</p>
-    
-    <div style="background-color: #f5eef8; padding: 15px; margin: 20px 0; border-left: 4px solid #9b59b6;">
-        <h4 style="margin-top: 0;">De Moivre's Formula:</h4>
-        <p>For any complex number in polar form \(z = re^{i\theta}\) and any integer \(n\):</p>
-        <p>\[ z^n = r^ne^{in\theta} = r^n(\cos(n\theta) + i\sin(n\theta)) \]</p>
-    </div>
-    
-    <h3 style="color: #3498db;">4.3 Multiplication and Division in Polar Form</h3>
-    <p>In polar form, multiplication and division become simpler:</p>
-    <p>For \(z_1 = r_1e^{i\theta_1}\) and \(z_2 = r_2e^{i\theta_2}\):</p>
-    <p>\[ z_1 \cdot z_2 = r_1r_2e^{i(\theta_1 + \theta_2)} \]</p>
-    <p>\[ \frac{z_1}{z_2} = \frac{r_1}{r_2}e^{i(\theta_1 - \theta_2)} \]</p>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">5. Applications in Electrical Engineering</h2>
-    
-    <div style="background-color: #e8f4f8; padding: 15px; margin: 20px 0; border-radius: 5px;">
-        <h3 style="color: #3498db; margin-top: 0;">5.1 AC Circuit Analysis</h3>
-        <p>Complex numbers are essential for analyzing alternating current (AC) circuits. The impedance \(Z\) of a circuit can be expressed as a complex number:</p>
-        <p>\[ Z = R + jX \]</p>
-        <p>where \(R\) is the resistance and \(X\) is the reactance. Note that in electrical engineering, \(j\) is commonly used instead of \(i\) to avoid confusion with current.</p>
-        <p>Ohm's law for AC circuits is expressed as:</p>
-        <p>\[ V = ZI \]</p>
-        <p>where \(V\) and \(I\) are phasors representing voltage and current.</p>
-    </div>
-    
-    <div style="background-color: #e8f4f8; padding: 15px; margin: 20px 0; border-radius: 5px;">
-        <h3 style="color: #3498db; margin-top: 0;">5.2 Phasors and Sinusoidal Signals</h3>
-        <p>A sinusoidal signal \(v(t) = V_m\cos(\omega t + \phi)\) can be represented by the complex number (phasor):</p>
-        <p>\[ V = V_m e^{j\phi} \]</p>
-        <p>This simplifies calculations involving multiple sinusoidal signals of the same frequency.</p>
-    </div>
-    
-    <div style="background-color: #e8f4f8; padding: 15px; margin: 20px 0; border-radius: 5px;">
-        <h3 style="color: #3498db; margin-top: 0;">5.3 Frequency Response</h3>
-        <p>Transfer functions in control systems and signal processing are often expressed as functions of the complex variable \(s = \sigma + j\omega\) (in the Laplace domain) or \(z = re^{j\theta}\) (in the Z-domain for discrete systems).</p>
-    </div>
-    
-    <div style="background-color: #e8f4f8; padding: 15px; margin: 20px 0; border-radius: 5px;">
-        <h3 style="color: #3498db; margin-top: 0;">5.4 Power Calculations</h3>
-        <p>The apparent power \(S\) in an AC circuit is a complex number:</p>
-        <p>\[ S = P + jQ \]</p>
-        <p>where \(P\) is the real power (measured in watts) and \(Q\) is the reactive power (measured in volt-amperes reactive).</p>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">6. Properties and Identities</h2>
-    
-    <p>Some important properties and identities of complex numbers:</p>
-    
-    <h3 style="color: #3498db;">6.1 Basic Properties</h3>
-    <ul>
-        <li>\(i^2 = -1\)</li>
-        <li>\(i^3 = -i\)</li>
-        <li>\(i^4 = 1\)</li>
-        <li>\(|z_1 \cdot z_2| = |z_1| \cdot |z_2|\)</li>
-        <li>\(|z_1 / z_2| = |z_1| / |z_2|\)</li>
-        <li>\(\arg(z_1 \cdot z_2) = \arg(z_1) + \arg(z_2)\)</li>
-        <li>\(\arg(z_1 / z_2) = \arg(z_1) - \arg(z_2)\)</li>
-    </ul>
-    
-    <h3 style="color: #3498db;">6.2 Useful Identities</h3>
-    <ul>
-        <li>\(e^{i\pi} + 1 = 0\) (Euler's identity)</li>
-        <li>\(\cos\theta = \frac{e^{i\theta} + e^{-i\theta}}{2}\)</li>
-        <li>\(\sin\theta = \frac{e^{i\theta} - e^{-i\theta}}{2i}\)</li>
-    </ul>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">7. Root Finding and Factorization</h2>
-    
-    <p>Complex numbers are essential for finding all roots of polynomials. The Fundamental Theorem of Algebra states that every non-constant polynomial with complex coefficients has at least one complex root.</p>
-    
-    <h3 style="color: #3498db;">7.1 Example: Quadratic Equations</h3>
-    <p>For a quadratic equation \(ax^2 + bx + c = 0\), the roots are given by:</p>
-    <p>\[ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]</p>
-    <p>When the discriminant \(b^2 - 4ac < 0\), the roots are complex conjugates.</p>
-    
-    <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 20px 0;">
-        <h4 style="margin-top: 0;">Example:</h4>
-        <p>For the equation \(x^2 + 2x + 5 = 0\), the discriminant is \(b^2 - 4ac = 2^2 - 4 \cdot 1 \cdot 5 = 4 - 20 = -16 < 0\)</p>
-        <p>The roots are \(x = \frac{-2 \pm \sqrt{-16}}{2} = -1 \pm 2i\)</p>
-    </div>
-    
-    <h2 style="color: #2980b9; margin-top: 30px;">Conclusion</h2>
-    
-    <p>Complex numbers are an essential mathematical tool in engineering, particularly in electrical fields. They provide elegant solutions to problems involving oscillations, waves, and AC circuits. Understanding complex numbers and their operations is fundamental for advanced concepts in signal processing, control systems, and electromagnetic theory.</p>
-</div>
-<!-- End of Complex Numbers Content -->
+</body>
+</html>
